@@ -27,9 +27,12 @@ public class CarrierChangedFunction implements RequestHandler<Object, Object> {
         final LambdaLogger logger = context.getLogger();
         if (accountDao != null) return;
         logger.log("initializing function...\r\n");
-        final String databaseUrl = "jdbc:mysql://192.168.0.66:3306/prueba";
+        final String databaseUrl = context.getClientContext().getEnvironment().get("db.url");
+        final String username = context.getClientContext().getEnvironment().get("db.username");
+        final String password = context.getClientContext().getEnvironment().get("db.password");
+        //final String databaseUrl = "jdbc:mysql://192.168.0.66:3306/prueba";
         try {
-            ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl, "root", "example");
+            ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl, username, password);
             accountDao = DaoManager.createDao(connectionSource, Eventos.class);
             logger.log("function initialization done.\r\n");
         } catch (Exception e) {

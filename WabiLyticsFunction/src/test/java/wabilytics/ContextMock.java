@@ -43,7 +43,7 @@ public class ContextMock implements Context {
 
     @Override
     public ClientContext getClientContext() {
-        return null;
+        return new ClientContextMock();
     }
 
     @Override
