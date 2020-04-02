@@ -27,7 +27,7 @@ public class CarrierChangedFunction implements RequestHandler<Object, Object> {
         final LambdaLogger logger = context.getLogger();
         if (accountDao != null) return;
         logger.log("initializing function...\r\n");
-        final String databaseUrl = "jdbc:mysql://localhost:3306/prueba";
+        final String databaseUrl = "jdbc:mysql://192.168.0.66:3306/prueba";
         try {
             ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl, "root", "example");
             accountDao = DaoManager.createDao(connectionSource, Eventos.class);
@@ -48,8 +48,11 @@ public class CarrierChangedFunction implements RequestHandler<Object, Object> {
         try {
             final String pageContents = this.getPageContents("https://checkip.amazonaws.com");
             String output = String.format("{ \"message\": \"hello world\", \"location\": \"%s\" }", pageContents);
+            final Eventos eventos = new Eventos(output);
+            accountDao.create(eventos);
             return new GatewayResponse(output, headers, 200);
-        } catch (IOException e) {
+        } catch (Exception e) {
+            logger.log(String.format("Error of Type %s: %s", e.getClass().getName(), e.getMessage()));
             return new GatewayResponse("{}", headers, 500);
         }
     }
