@@ -8,8 +8,9 @@ import org.junit.Test;
 public class CarrierChangedFunctionTest {
   @Test
   public void successfulResponse() {
+    ContextMock context = new ContextMock();
     CarrierChangedFunction fn = new CarrierChangedFunction();
-    GatewayResponse result = (GatewayResponse) fn.handleRequest(null, null);
+    GatewayResponse result = (GatewayResponse) fn.handleRequest(null, context);
     assertEquals(result.getStatusCode(), 200);
     assertEquals(result.getHeaders().get("Content-Type"), "application/json");
     String content = result.getBody();

@@ -10,13 +10,38 @@ import java.util.stream.Collectors;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
 
 /**
  * Handler for requests to Lambda function.
  */
 public class CarrierChangedFunction implements RequestHandler<Object, Object> {
 
+    private static Dao<Eventos, String> accountDao;
+
+    private static void initialize(Context context) {
+        final LambdaLogger logger = context.getLogger();
+        if (accountDao != null) return;
+        logger.log("initializing function...\r\n");
+        final String databaseUrl = "jdbc:mysql://localhost:3306/prueba";
+        try {
+            ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl, "root", "example");
+            accountDao = DaoManager.createDao(connectionSource, Eventos.class);
+            logger.log("function initialization done.\r\n");
+        } catch (Exception e) {
+            logger.log(String.format("Error of Type %s: %s", e.getClass().getName(), e.getMessage()));
+            e.printStackTrace();
+        }
+    }
+
     public Object handleRequest(final Object input, final Context context) {
+        initialize(context);
+        final LambdaLogger logger = context.getLogger();
+        logger.log("CarrierChangedFunction invoked\r\n");
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("X-Custom-Header", "application/json");
