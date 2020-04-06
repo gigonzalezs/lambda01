@@ -15,6 +15,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 /**
  * Handler for requests to Lambda function.
@@ -27,13 +28,22 @@ public class CarrierChangedFunction implements RequestHandler<Object, Object> {
         final LambdaLogger logger = context.getLogger();
         if (accountDao != null) return;
         logger.log("initializing function...\r\n");
-        final String databaseUrl = context.getClientContext().getEnvironment().get("db.url");
-        final String username = context.getClientContext().getEnvironment().get("db.username");
-        final String password = context.getClientContext().getEnvironment().get("db.password");
-        //final String databaseUrl = "jdbc:mysql://192.168.0.66:3306/prueba";
+        final String databaseUrl = System.getenv().getOrDefault("db.url", "jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE");
+        /*
+        Map <String, String> map = System.getenv();
+        for (Map.Entry <String, String> entry: map.entrySet()) {
+            if (entry.getKey().startsWith("db.")) {
+                System.out.println("Variable Name:- " + entry.getKey() + " Value:- " + entry.getValue());
+            }
+        }
+        */
+        logger.log(String.format("Database URL: %s.\r\n", databaseUrl));
+        final String username = System.getenv().get("db.username");
+        final String password = System.getenv().get("db.password");
         try {
             ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl, username, password);
             accountDao = DaoManager.createDao(connectionSource, Eventos.class);
+            TableUtils.createTableIfNotExists(connectionSource, Eventos.class);
             logger.log("function initialization done.\r\n");
         } catch (Exception e) {
             logger.log(String.format("Error of Type %s: %s", e.getClass().getName(), e.getMessage()));

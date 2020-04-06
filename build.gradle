@@ -11,4 +11,5 @@ dependencies {
     implementation 'com.j256.ormlite:ormlite-jdbc:5.1'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.48'
     testImplementation 'junit:junit:4.12'
+    testImplementation 'com.h2database:h2:1.4.200'
 }
