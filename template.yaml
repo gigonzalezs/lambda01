@@ -20,7 +20,7 @@ Resources:
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          db.url: jdbc:mysql://192.168.43.250:3306/prueba
+          db.url: jdbc:mysql://192.168.0.66:3306/prueba
           db.username: root
           db.password: example
       Events:
