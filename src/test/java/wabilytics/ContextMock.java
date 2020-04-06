@@ -42,9 +42,7 @@ public class ContextMock implements Context {
     }
 
     @Override
-    public ClientContext getClientContext() {
-        return new ClientContextMock();
-    }
+    public ClientContext getClientContext() { return null; }
 
     @Override
     public int getRemainingTimeInMillis() {
