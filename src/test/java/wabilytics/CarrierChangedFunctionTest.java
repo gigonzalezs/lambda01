@@ -10,7 +10,7 @@ public class CarrierChangedFunctionTest {
   @Test
   public void successfulResponse() {
     ContextMock context = new ContextMock();
-    Datasource.INSTANCE.initializeWithCreateTables(context);
+    Datasource.INSTANCE.initializeWithParams(context, true, "jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE");
     CarrierChangedFunction fn = new CarrierChangedFunction();
     GatewayResponse result = (GatewayResponse) fn.handleRequest(null, context);
     assertEquals(result.getStatusCode(), 200);
