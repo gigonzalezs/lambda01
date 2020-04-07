@@ -2,6 +2,7 @@ package wabilytics.carrierChanged
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
+import wabilytics.EventRequest
 import wabilytics.GatewayResponse
 import java.io.BufferedReader
 import java.io.IOException
@@ -13,8 +14,8 @@ import java.util.stream.Collectors
 /**
  * Handler for requests to Lambda function.
  */
-class CarrierChangedFunction : RequestHandler<Any?, Any> {
-    override fun handleRequest(input: Any?, context: Context): Any {
+class CarrierChangedFunction : RequestHandler<EventRequest?, Any> {
+    override fun handleRequest(input: EventRequest?, context: Context): Any {
         CarrierDao.initialize(context)
         val logger = context.logger
         logger.log("CarrierChangedFunction invoked\r\n")

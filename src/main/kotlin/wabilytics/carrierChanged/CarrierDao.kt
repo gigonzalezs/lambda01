@@ -2,6 +2,7 @@ package wabilytics.carrierChanged
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.LambdaLogger
+import com.fasterxml.jackson.databind.JsonNode
 import com.j256.ormlite.dao.Dao
 import com.j256.ormlite.dao.DaoManager
 import com.j256.ormlite.table.TableUtils
@@ -33,4 +34,11 @@ object CarrierDao {
     fun save(carrier: Carrier) {
         _dao?.create(carrier)
     }
+
+    private fun JsonNode.toCarrier(userDisabled: Boolean) = Carrier(
+            id = this["id"].asText(),
+            store= this["store"].asText(),
+            enabled =  this["enabled"].asBoolean(),
+            userDisabled = userDisabled
+    )
 }
