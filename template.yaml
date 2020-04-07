@@ -20,10 +20,10 @@ Resources:
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          db.url: jdbc:mysql://192.168.0.66:3306/prueba
-          db.username: root
-          db.password: example
-          db.createTables: true
+          DB_URL: jdbc:mysql://192.168.0.66:3306/prueba
+          DB_USERNAME: root
+          DB_PASSWORD: example
+          DB_CREATE_TABLES: true
       Events:
         CarrierChangedFunctionReceiveMessage:
           Type: SQS
@@ -39,9 +39,9 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  CarrierChangedApi:
-    Description: "API Gateway endpoint URL for Prod stage for CarrierChanged function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/carrierChanged/"
+  SqsDeliveriesQueue:
+    Description: "SQS Queue for deliveries"
+    Value: !GetAtt SqsDeliveriesQueue.Arn
   CarrierChangedFunction:
     Description: "Carrier Changed Lambda Function ARN"
     Value: !GetAtt CarrierChangedFunction.Arn

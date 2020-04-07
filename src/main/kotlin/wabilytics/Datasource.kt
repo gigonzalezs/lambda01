@@ -34,12 +34,12 @@ object Datasource {
 
     }
     private fun setupConnectionSource() {
-        val databaseUrl = System.getenv().getOrDefault("db.url", _defaultDatabaseUrl)
+        val databaseUrl = System.getenv().getOrDefault("DB_URL", _defaultDatabaseUrl)
         logger?.log(String.format("Database URL: %s.\r\n", databaseUrl))
-        val username = System.getenv()["db.username"]
-        val password = System.getenv()["db.password"]
+        val username = System.getenv()["DB_USERNAME"]
+        val password = System.getenv()["DB_PASSWORD"]
         if (!_createTablesIfNotExist)
-            _createTablesIfNotExist = System.getenv().getOrDefault("db.createTables","false").toBoolean()
+            _createTablesIfNotExist = System.getenv().getOrDefault("DB_CREATE_TABLES","false").toBoolean()
         try {
             _connectionSource = JdbcConnectionSource(databaseUrl, username, password)
             logger?.log("datasource initialization done.\r\n")
