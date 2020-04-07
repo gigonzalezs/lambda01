@@ -9,11 +9,14 @@ import com.j256.ormlite.support.ConnectionSource
 import com.j256.ormlite.table.TableUtils
 
 object Datasource {
+    private var logger: LambdaLogger? = null
     private var _initialized = false
     private var _createTablesIfNotExist = false
-    private var logger: LambdaLogger? = null
     private var _connectionSource: ConnectionSource? = null
     private var _accountDao: Dao<Eventos, String>? = null
+
+    val initialized: Boolean
+        get() = _initialized
 
     val connectionSource: ConnectionSource?
         get() = _connectionSource
@@ -30,12 +33,17 @@ object Datasource {
         setupConnectionSource()
         setupAccountDAO()
     }
+    fun initializeWithCreateTables(context: Context) {
+        _createTablesIfNotExist = true
+        initialize(context)
+    }
     private fun setupConnectionSource() {
         val databaseUrl = System.getenv().getOrDefault("db.url", "jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE")
         logger?.log(String.format("Database URL: %s.\r\n", databaseUrl))
         val username = System.getenv()["db.username"]
         val password = System.getenv()["db.password"]
-        _createTablesIfNotExist = System.getenv().getOrDefault("db.createTables","false").toBoolean()
+        if (!_createTablesIfNotExist)
+            _createTablesIfNotExist = System.getenv().getOrDefault("db.createTables","false").toBoolean()
         try {
             _connectionSource = JdbcConnectionSource(databaseUrl, username, password)
             logger?.log("datasource initialization done.\r\n")

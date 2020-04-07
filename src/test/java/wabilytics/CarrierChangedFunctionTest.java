@@ -10,6 +10,7 @@ public class CarrierChangedFunctionTest {
   @Test
   public void successfulResponse() {
     ContextMock context = new ContextMock();
+    Datasource.INSTANCE.initializeWithCreateTables(context);
     CarrierChangedFunction fn = new CarrierChangedFunction();
     GatewayResponse result = (GatewayResponse) fn.handleRequest(null, context);
     assertEquals(result.getStatusCode(), 200);

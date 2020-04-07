@@ -2,8 +2,6 @@ package wabilytics.carrierChanged
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
-import wabilytics.Datasource
-import wabilytics.Eventos
 import wabilytics.GatewayResponse
 import java.io.BufferedReader
 import java.io.IOException
@@ -17,7 +15,7 @@ import java.util.stream.Collectors
  */
 class CarrierChangedFunction : RequestHandler<Any?, Any> {
     override fun handleRequest(input: Any?, context: Context): Any {
-        Datasource.initialize(context)
+        CarrierDao.initialize(context)
         val logger = context.logger
         logger.log("CarrierChangedFunction invoked\r\n")
         val headers: MutableMap<String, String> = HashMap()
@@ -26,8 +24,8 @@ class CarrierChangedFunction : RequestHandler<Any?, Any> {
         return try {
             val pageContents = getPageContents("https://checkip.amazonaws.com")
             val output = String.format("{ \"message\": \"hello world\", \"location\": \"%s\" }", pageContents)
-            val eventos = Eventos(output)
-            Datasource.accountDao!!.create(eventos)
+            val carrier = Carrier(UUID.randomUUID().toString(), output, true, false)
+            CarrierDao.save(carrier)
             GatewayResponse(output, headers, 200)
         } catch (e: Exception) {
             logger.log(String.format("Error of Type %s: %s", e.javaClass.name, e.message))
