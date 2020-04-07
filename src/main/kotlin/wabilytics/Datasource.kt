@@ -10,7 +10,7 @@ import com.j256.ormlite.table.TableUtils
 
 object Datasource {
     private var _initialized = false
-    private var _createTablesIfNotExist = true
+    private var _createTablesIfNotExist = false
     private var logger: LambdaLogger? = null
     private var _connectionSource: ConnectionSource? = null
     private var _accountDao: Dao<Eventos, String>? = null
@@ -35,6 +35,7 @@ object Datasource {
         logger?.log(String.format("Database URL: %s.\r\n", databaseUrl))
         val username = System.getenv()["db.username"]
         val password = System.getenv()["db.password"]
+        _createTablesIfNotExist = System.getenv().getOrDefault("db.createTables","false").toBoolean()
         try {
             _connectionSource = JdbcConnectionSource(databaseUrl, username, password)
             logger?.log("datasource initialization done.\r\n")
