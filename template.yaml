@@ -25,11 +25,6 @@ Resources:
           db.password: example
           db.createTables: true
       Events:
-        CarrierChangedFunctionApi:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /carrierChanged
-            Method: post
         CarrierChangedFunctionReceiveMessage:
           Type: SQS
           Properties:
