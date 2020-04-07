@@ -25,11 +25,20 @@ Resources:
           db.password: example
           db.createTables: true
       Events:
-        HelloWorld:
+        CarrierChangedFunctionApi:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /carrierChanged
-            Method: get
+            Method: post
+        CarrierChangedFunctionReceiveMessage:
+          Type: SQS
+          Properties:
+             Queue: !GetAtt SqsDeliveriesQueue.Arn
+             BatchSize: 10
+             Enabled: true
+
+  SqsDeliveriesQueue:
+    Type: AWS::SQS::Queue
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

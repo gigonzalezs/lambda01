@@ -19,6 +19,7 @@ class CarrierChangedFunction : RequestHandler<EventRequest?, Any> {
         CarrierDao.initialize(context)
         val logger = context.logger
         logger.log("CarrierChangedFunction invoked\r\n")
+        logger.log(String.format("input: %s\r\n",input?.toString()))
         val headers: MutableMap<String, String> = HashMap()
         headers["Content-Type"] = "application/json"
         headers["X-Custom-Header"] = "application/json"
