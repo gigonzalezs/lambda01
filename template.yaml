@@ -26,22 +26,14 @@ Resources:
           DB_CREATE_TABLES: true
       Events:
         CarrierChangedFunctionReceiveMessage:
-          Type: SQS
+          Type: SNS
           Properties:
-             Queue: !GetAtt SqsDeliveriesQueue.Arn
-             BatchSize: 10
-             Enabled: true
-
-  SqsDeliveriesQueue:
-    Type: AWS::SQS::Queue
+            Topic: arn:aws:sns:us-east-1:835328222444:eventos
+            FilterPolicy:
+              subject:
+                - CarrierChanged
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  SqsDeliveriesQueue:
-    Description: "SQS Queue for deliveries"
-    Value: !GetAtt SqsDeliveriesQueue.Arn
   CarrierChangedFunction:
     Description: "Carrier Changed Lambda Function ARN"
     Value: !GetAtt CarrierChangedFunction.Arn
