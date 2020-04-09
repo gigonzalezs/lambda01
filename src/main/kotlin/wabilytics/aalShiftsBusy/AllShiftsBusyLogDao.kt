@@ -1,4 +1,4 @@
-package wabilytics.carrierChanged
+package wabilytics.aalShiftsBusy
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.LambdaLogger
@@ -7,11 +7,14 @@ import com.j256.ormlite.dao.Dao
 import com.j256.ormlite.dao.DaoManager
 import com.j256.ormlite.table.TableUtils
 import wabilytics.Datasource
+import java.time.Clock
+import java.util.*
 
-object CarrierDao {
+object AllShiftsBusyLogDao {
     private var logger: LambdaLogger? = null
     private var _initialized = false
-    private var _dao: Dao<Carrier, String>? = null
+    private var _dao: Dao<AllShiftsBusyLog, String>? = null
+    private val clock: Clock = Clock.systemDefaultZone()
 
     val initialized: Boolean
         get() = _initialized
@@ -25,20 +28,20 @@ object CarrierDao {
     }
 
     private fun setupDAO() {
-        _dao = DaoManager.createDao(Datasource.connectionSource, Carrier::class.java)
+        _dao = DaoManager.createDao(Datasource.connectionSource, AllShiftsBusyLog::class.java)
         if (Datasource.createTablesIfNotExist) {
-            TableUtils.createTableIfNotExists(Datasource.connectionSource, Carrier::class.java)
+            TableUtils.createTableIfNotExists(Datasource.connectionSource, AllShiftsBusyLog::class.java)
         }
     }
 
-    fun save(carrier: Carrier) {
-        _dao?.create(carrier)
+    fun save(log: AllShiftsBusyLog) {
+        _dao?.create(log)
     }
 }
 
-fun JsonNode.toCarrier(userDisabled: Boolean) = Carrier(
-        id = this["id"].asText(),
-        store= this["store"].asText(),
-        enabled =  this["enabled"].asBoolean(),
-        userDisabled = userDisabled
+fun JsonNode.toAllShiftsBusyLog() = AllShiftsBusyLog(
+        id = UUID.fromString(this["id"].asText()),
+        customerId = this["customerId"].asText(),
+        latitude = this["latitude"].asDouble(),
+        longitude = this["longitude"].asDouble()
 )

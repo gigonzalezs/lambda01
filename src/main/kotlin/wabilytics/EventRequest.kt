@@ -7,7 +7,7 @@ import org.omg.CORBA.Object
 
 data class EventRequest (
         val subject: String?,
-        val payload: Any?) {
+        val payload: JsonNode?) {
 
     companion object {
         val mapper = jacksonObjectMapper()
