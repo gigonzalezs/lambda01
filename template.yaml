@@ -29,9 +29,6 @@ Resources:
           Type: SNS
           Properties:
             Topic: arn:aws:sns:us-east-1:835328222444:eventos
-            FilterPolicy:
-              subject:
-                - CarrierChanged
 
 Outputs:
   CarrierChangedFunction:

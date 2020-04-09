@@ -6,12 +6,14 @@ import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import wabilytics.carrierChanged.CarrierChangedFunction;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class CarrierChangedFunctionTest {
   @Test
@@ -19,16 +21,11 @@ public class CarrierChangedFunctionTest {
     ContextMock context = new ContextMock();
     Datasource.INSTANCE.initializeWithParams(context, true, "jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE");
     CarrierChangedFunction fn = new CarrierChangedFunction();
-    JsonNode payload = StringToJsonNode("{\"k1\":\"v1\",\"k2\":\"v2\"}");
-    EventRequest request = new EventRequest("subject", payload);
-    GatewayResponse result = (GatewayResponse) fn.handleRequest(request, context);
-    assertEquals(result.getStatusCode(), 200);
-    assertEquals(result.getHeaders().get("Content-Type"), "application/json");
-    String content = result.getBody();
-    assertNotNull(content);
-    assertTrue(content.contains("\"message\""));
-    assertTrue(content.contains("\"hello world\""));
-    assertTrue(content.contains("\"location\""));
+    JsonNode payload = StringToJsonNode("{\"Records\":[{\"EventSource\":\"aws:sns\",\"EventVersion\":\"1.0\",\"EventSubscriptionArn\":\"arn:aws:sns:us-east-1:835328222444:eventos:e8882169-78f9-47b4-862c-c673afbae204\",\"Sns\":{\"Type\":\"Notification\",\"MessageId\":\"24019796-9cac-5682-8b41-c09ed6e702ba\",\"TopicArn\":\"arn:aws:sns:us-east-1:835328222444:eventos\",\"Subject\":\"carrierChanged\",\"Message\":{\"payload\":\"loko\"},\"Timestamp\":\"2020-04-08T21:54:19.960Z\",\"SignatureVersion\":\"1\",\"Signature\":\"ECsvTsj3gfW93Qm+C06LO/AzrAxvXhpBNR4f999eaZRJiBCe+837gha9A::\",\"SigningCertUrl\":\"https://sns.us-east-1.amazonaws.com/SimpleNotificationService-a86cb10b4e1f29c941702d737128f7b6.pem\",\"UnsubscribeUrl\":\"https://sns.us-east-1.amazonaws.com/?Action:Unsubscribe&SubscriptionArn:arn:aws:sns:us-east-1:835328222444:eventos:e8882169-78f9-47b4-862c-c673afbae204\",\"MessageAttributes\":{}}}]}");
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, Object>  payloadAsMap = mapper.convertValue(payload, new TypeReference<Map<String, Object>>(){});
+    String result =  fn.handleRequest(payloadAsMap, context);
+    assertEquals(result, "OK");
   }
 
   private static JsonNode StringToJsonNode(String jsonString) throws IOException {
