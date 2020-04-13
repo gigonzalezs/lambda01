@@ -40,7 +40,6 @@ object AllShiftsBusyLogDao {
 }
 
 fun JsonNode.toAllShiftsBusyLog() = AllShiftsBusyLog(
-        id = UUID.fromString(this["id"].asText()),
         customerId = this["customerId"].asText(),
         latitude = this["latitude"].asDouble(),
         longitude = this["longitude"].asDouble()
