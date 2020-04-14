@@ -14,7 +14,7 @@ Resources:
   CarrierChangedFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./build/libs/wabi-1.0-SNAPSHOT.jar
+      CodeUri: .aws-sam/build/CarrierChangedFunction
       Handler: wabilytics.carrierChanged.CarrierChangedFunction::handleRequest
       Runtime: java8
       MemorySize: 512
@@ -33,7 +33,7 @@ Resources:
   AllShiftsBusyFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./build/libs/wabi-1.0-SNAPSHOT.jar
+      CodeUri: .aws-sam/build/AllShiftsBusyFunction
       Handler: wabilytics.aalShiftsBusy.AllShiftsBusyFunction::handleRequest
       Runtime: java8
       MemorySize: 512
