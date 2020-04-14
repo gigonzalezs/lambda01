@@ -18,6 +18,7 @@ class AllShiftsBusyFunction : RequestHandler<Any?, String> {
         logger.log(String.format("input: %s\r\n",input?.toString()))
         val eventRequest = EventRequest.fromMap(input as Map<String, Object>?)
         return try {
+            logger.log(String.format("payload type: %s\r\n",eventRequest.payload?.javaClass?.name))
             val log = eventRequest.payload!!.toAllShiftsBusyLog()
             AllShiftsBusyLogDao.save(log)
             "OK"
