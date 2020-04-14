@@ -2,9 +2,8 @@ package wabilytics
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.omg.CORBA.Object
+
 
 data class EventRequest (
         val subject: String?,

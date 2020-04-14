@@ -2,7 +2,6 @@ package wabilytics.aalShiftsBusy
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
-import org.omg.CORBA.Object
 import wabilytics.EventRequest
 
 /**
