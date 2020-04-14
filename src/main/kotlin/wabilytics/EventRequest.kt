@@ -2,6 +2,7 @@ package wabilytics
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.omg.CORBA.Object
 
@@ -21,7 +22,7 @@ data class EventRequest (
             return EventRequest(subject, payload)
         }
         fun fromMap(rawRequest: Map<String, Object>? ): EventRequest {
-            val event = mapper.convertValue(rawRequest, object : TypeReference<JsonNode>() {})
+            val event: JsonNode = mapper.convertValue(rawRequest, object : TypeReference<JsonNode>() {})
             return fromJson(event)
         }
     }
