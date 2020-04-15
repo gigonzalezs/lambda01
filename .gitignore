@@ -9,6 +9,7 @@
 
 # ----- serverless -----
 .aws-sam
+packaged-template.yml
 
 # ----- JVM -----
 .gradle
