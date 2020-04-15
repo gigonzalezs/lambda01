@@ -9,7 +9,7 @@ phases:
       - pip install pipenv --user
       - pipenv install awscli aws-sam-cli
       - pipenv run sam build
-      - pipenv run sam package --template-file .aws-sam/build/template.yaml --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1q2dzim793q9k --output-template-file packaged-template.yml --s3-prefix wabilytics-fn --force-upload
+      - pipenv run sam package --template-file .aws-sam/build/template.yaml --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1q2dzim793q9k --output-template-file packaged-template.yml --s3-prefix wabilytics-app --force-upload
       - pipenv run sam deploy --template-file packaged-template.yml --stack-name wabilytics-app --debug
 artifacts:
   files:
