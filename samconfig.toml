@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "wabilytics-app"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1q2dzim793q9k"
+s3_prefix = "wabilytics-app"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+
