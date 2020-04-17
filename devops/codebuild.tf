@@ -7,6 +7,7 @@ data "template_file" "buildspec" {
 module "build" {
   source                      = "https://s3-us-west-2.amazonaws.com/yopdev.artifacts/terraform-modules/codebuild_tr_v0.12.tar.gz"
   name                        = "${var.name}-${terraform.workspace}-build"
+  timeout                     = 60
   environment_codebuild_image = "aws/codebuild/standard:4.0-20.03.13"
   buildspec                   = data.template_file.buildspec.rendered
   role                        = aws_iam_role.codebuild_role.id
