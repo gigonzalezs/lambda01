@@ -1,3 +1,5 @@
+# ---- terraform ----
+.terraform
 
 # ----- misc IDEs and OSes -----
 .settings
