@@ -12,7 +12,7 @@ class AllShiftsBusyFunction : RequestHandler<Any?, String> {
     override fun handleRequest(input: Any?, context: Context): String {
         AllShiftsBusyLogDao.initialize(context)
         val logger = context.logger
-        logger.log("AllShiftsBusyFunction invoked - version 1.10\r\n")
+        logger.log("AllShiftsBusyFunction invoked - version 1.11\r\n")
         logger.log(String.format("input type: %s\r\n",input?.javaClass?.name))
         logger.log(String.format("input: %s\r\n",input?.toString()))
         val eventRequest = EventRequest.fromMap(input as Map<String, Object>?)
