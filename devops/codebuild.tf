@@ -3,7 +3,6 @@ data "template_file" "buildspec" {
   template = file("${path.module}/templates/buildspec.yml")
 }
 
-
 module "build" {
   source                      = "https://s3-us-west-2.amazonaws.com/yopdev.artifacts/terraform-modules/codebuild_tr_v0.12.tar.gz"
   name                        = "${var.name}-${terraform.workspace}-build"

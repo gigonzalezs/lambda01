@@ -38,6 +38,24 @@ resource "aws_iam_role_policy" "policy" {
   policy = <<EOF
 {
     "Statement": [
+      {
+            "Action": [
+                "apigateway:*",
+                "codedeploy:*",
+                "lambda:*",
+                "cloudformation:CreateChangeSet",
+                "iam:GetRole",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:PutRolePolicy",
+                "iam:AttachRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:PassRole"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
         {
             "Effect": "Allow",
             "Action": [
@@ -47,40 +65,11 @@ resource "aws_iam_role_policy" "policy" {
         },
         {
             "Action": [
-                "iam:PassRole"
-            ],
-            "Resource": "*",
-            "Effect": "Allow",
-            "Condition": {
-                "StringEqualsIfExists": {
-                    "iam:PassedToService": [
-                        "cloudformation.amazonaws.com",
-                        "elasticbeanstalk.amazonaws.com",
-                        "ec2.amazonaws.com",
-                        "ecs-tasks.amazonaws.com"
-                    ]
-                }
-            }
-        },
-        {
-            "Action": [
                 "codecommit:CancelUploadArchive",
                 "codecommit:GetBranch",
                 "codecommit:GetCommit",
                 "codecommit:GetUploadArchiveStatus",
                 "codecommit:UploadArchive"
-            ],
-            "Resource": "*",
-            "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "codedeploy:CreateDeployment",
-                "codedeploy:GetApplication",
-                "codedeploy:GetApplicationRevision",
-                "codedeploy:GetDeployment",
-                "codedeploy:GetDeploymentConfig",
-                "codedeploy:RegisterApplicationRevision"
             ],
             "Resource": "*",
             "Effect": "Allow"
@@ -105,14 +94,6 @@ resource "aws_iam_role_policy" "policy" {
                 "rds:*",
                 "sqs:*",
                 "ecs:*"
-            ],
-            "Resource": "*",
-            "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "lambda:InvokeFunction",
-                "lambda:ListFunctions"
             ],
             "Resource": "*",
             "Effect": "Allow"
@@ -247,7 +228,6 @@ resource "aws_codepipeline" "codepipeline" {
     }
   }
 
-
   stage {
     name = "pre-Deploy"
 
@@ -263,8 +243,8 @@ resource "aws_codepipeline" "codepipeline" {
         ActionMode     = "REPLACE_ON_FAILURE"
         Capabilities   = "CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM"
         RoleArn        =  aws_iam_role.role.arn,
-        StackName      = "${var.name}-${terraform.workspace}-stack",
-        ChangeSetName  = "${var.name}-${terraform.workspace}-changeSet",
+        StackName      = "${var.name}-${terraform.workspace}-${random_pet.stack_name.id}-stack",
+        ChangeSetName  = "${var.name}-${terraform.workspace}-${random_pet.stack_name.id}-changeSet",
         TemplatePath   = "build_output::packaged-template.yml"
       }
     }
@@ -289,6 +269,8 @@ resource "aws_codepipeline" "codepipeline" {
   }
   */
 }
+
+resource "random_pet" "stack_name" {}
 
 
 data "aws_codecommit_repository" "codecommit" {
