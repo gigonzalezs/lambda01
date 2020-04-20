@@ -12,9 +12,6 @@ module "build" {
   buildspec                   = data.template_file.buildspec.rendered
   role                        = aws_iam_role.codebuild_role.id
   environment_privileged_mode = true
-  vpc                         = "vpc-221a1d58"
-  subnets                     = ["subnet-d3cc27b5"]
-  security_group_ids          = ["sg-aeff7781"]
  
 }
 

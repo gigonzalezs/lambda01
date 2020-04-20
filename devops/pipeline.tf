@@ -21,7 +21,8 @@ resource "aws_iam_role" "role" {
       "Principal": {
         "Service": [
           "codepipeline.amazonaws.com",
-          "events.amazonaws.com"
+          "events.amazonaws.com",
+          "cloudformation.amazonaws.com"
         ]
       },
       "Action": "sts:AssumeRole"
@@ -37,6 +38,13 @@ resource "aws_iam_role_policy" "policy" {
   policy = <<EOF
 {
     "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "codepipeline:StartPipelineExecution"
+            ],
+            "Resource": "*"
+        },
         {
             "Action": [
                 "iam:PassRole"
@@ -231,31 +239,38 @@ resource "aws_codepipeline" "codepipeline" {
       owner           = "AWS"
       provider        = "CodeBuild"
       input_artifacts = ["source"]
+      output_artifacts = ["build_output"]
 
       configuration = {
         ProjectName = module.build.name
       }
     }
   }
-  /*
+
 
   stage {
-    name = "Terraform"
+    name = "pre-Deploy"
 
     action {
       version         = "1"
-      name            = "Build"
-      category        = "Build"
+      name            = "create_changeSet"
+      category        = "Deploy"
       owner           = "AWS"
-      provider        = "CodeBuild"
-      input_artifacts = ["source"]
+      provider        = "CloudFormation"
+      input_artifacts = ["build_output"]
 
       configuration = {
-        ProjectName = module.terraform.name
+        ActionMode     = "REPLACE_ON_FAILURE"
+        Capabilities   = "CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM"
+        RoleArn        =  aws_iam_role.role.arn,
+        StackName      = "${var.name}-${terraform.workspace}-stack",
+        ChangeSetName  = "${var.name}-${terraform.workspace}-changeSet",
+        TemplatePath   = "build_output::packaged-template.yml"
       }
     }
   }
 
+  /*
   stage {
     name = "Deploy"
 
