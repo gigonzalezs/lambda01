@@ -20,8 +20,8 @@ Resources:
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          DB_URL: jdbc:mysql://192.168.0.66:3306/prueba
-          DB_USERNAME: root
+          DB_URL: jdbc:mysql://database-1.cbfzuvbm5tmc.us-east-1.rds.amazonaws.com/reporting
+          DB_USERNAME: reporting
           DB_PASSWORD: example
           DB_CREATE_TABLES: true
       Events:
@@ -39,8 +39,8 @@ Resources:
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          DB_URL: jdbc:mysql://192.168.0.66:3306/prueba
-          DB_USERNAME: root
+          DB_URL: jdbc:mysql://database-1.cbfzuvbm5tmc.us-east-1.rds.amazonaws.com/reporting
+          DB_USERNAME: reporting
           DB_PASSWORD: example
           DB_CREATE_TABLES: true
       Events:
