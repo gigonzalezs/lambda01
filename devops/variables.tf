@@ -9,3 +9,15 @@ variable "name" {
 variable "repository_name" {
   default = "wabi"
 }
+
+variable "db_url" {
+  default = "jdbc:mysql://database-1.cbfzuvbm5tmc.us-east-1.rds.amazonaws.com/reporting"
+}
+
+variable "db_username" {
+  default = "reporting"
+}
+
+variable "db_password" {
+  default = "example"
+}

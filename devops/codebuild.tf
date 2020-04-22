@@ -1,6 +1,11 @@
 
 data "template_file" "buildspec" {
   template = file("${path.module}/templates/buildspec.yml")
+   vars = {
+    db_url = "${var.db_url}"
+    db_user = "${var.db_username}"
+    db_password = "${var.db_password}"
+  }
 }
 
 module "build" {
