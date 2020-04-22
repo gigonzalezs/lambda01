@@ -10,6 +10,15 @@ Globals:
   Function:
     Timeout: 20
 
+Parameters:
+  DatabaseURL:
+    Type: String
+  DatabaseUser:
+    Type: String
+  DatabasePassword:
+    Type: String
+    
+
 Resources:
   CarrierChangedFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -20,10 +29,10 @@ Resources:
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          DB_URL: jdbc:mysql://database-1.cbfzuvbm5tmc.us-east-1.rds.amazonaws.com/reporting
-          DB_USERNAME: reporting
-          DB_PASSWORD: example
-          DB_CREATE_TABLES: true
+          DB_URL: !Ref DatabaseURL
+          DB_USERNAME: !Ref DatabaseUser
+          DB_PASSWORD: !Ref DatabasePassword
+          DB_CREATE_TABLES: false
       Events:
         CarrierChangedFunctionReceiveMessage:
           Type: SNS
@@ -39,10 +48,10 @@ Resources:
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          DB_URL: jdbc:mysql://database-1.cbfzuvbm5tmc.us-east-1.rds.amazonaws.com/reporting
-          DB_USERNAME: reporting
-          DB_PASSWORD: example
-          DB_CREATE_TABLES: true
+          DB_URL: !Ref DatabaseURL
+          DB_USERNAME: !Ref DatabaseUser
+          DB_PASSWORD: !Ref DatabasePassword
+          DB_CREATE_TABLES: false
       Events:
         AllShiftsBusyFunctionReceiveMessage:
           Type: SNS
