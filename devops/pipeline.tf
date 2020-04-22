@@ -246,7 +246,7 @@ resource "aws_codepipeline" "codepipeline" {
         StackName      = "${var.name}-${terraform.workspace}-${random_pet.stack_name.id}-stack",
         ChangeSetName  = "${var.name}-${terraform.workspace}-${random_pet.stack_name.id}-changeSet",
         TemplatePath   = "build_output::packaged-template.yml"
-        ParameterOverrides = "{\"DatabaseURL\":\"db_url\",\"DatabaseUser\":\"db_user\",\"DatabasePassword\":\"db_password\"}"
+        ParameterOverrides = "{\"DatabaseURL\":\"${var.db_url}\",\"DatabaseUser\":\"${var.db_username}\",\"DatabasePassword\":\"${var.db_password}\"}"
       }
     }
   }
