@@ -244,7 +244,7 @@ resource "aws_codepipeline" "codepipeline" {
         StackName      = "${var.name}-qa-${random_pet.stack_name.id}-stack",
         ChangeSetName  = "${var.name}-qa-${random_pet.stack_name.id}-changeSet",
         TemplatePath   = "build_output::packaged-template.yml"
-        ParameterOverrides = "{\"DatabaseURL\":\"${var.db_url}\",\"DatabaseUser\":\"${var.db_username}\",\"DatabasePassword\":\"${var.db_password}\"}"
+        ParameterOverrides = "{\"DatabaseURL\":\"${var.qa_db_url}\",\"DatabaseUser\":\"${var.qa_db_username}\",\"DatabasePassword\":\"${var.qa_db_password}\"}"
       }
     }
   }
@@ -279,7 +279,7 @@ resource "aws_codepipeline" "codepipeline" {
         StackName      = "${var.name}-prod-${random_pet.stack_name.id}-stack",
         ChangeSetName  = "${var.name}-prod-${random_pet.stack_name.id}-changeSet",
         TemplatePath   = "build_output::packaged-template.yml"
-        ParameterOverrides = "{\"DatabaseURL\":\"${var.db_url}\",\"DatabaseUser\":\"${var.db_username}\",\"DatabasePassword\":\"${var.db_password}\"}"
+        ParameterOverrides = "{\"DatabaseURL\":\"${var.prod_db_url}\",\"DatabaseUser\":\"${var.prod_db_username}\",\"DatabasePassword\":\"${var.prod_db_password}\"}"
       }
     }
   }
