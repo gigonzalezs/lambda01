@@ -229,11 +229,11 @@ resource "aws_codepipeline" "codepipeline" {
   }
 
   stage {
-    name = "pre-Deploy"
+    name = "Deploy"
 
     action {
       version         = "1"
-      name            = "create_changeSet"
+      name            = "Deploy"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "CloudFormation"
@@ -250,25 +250,6 @@ resource "aws_codepipeline" "codepipeline" {
       }
     }
   }
-
-  /*
-  stage {
-    name = "Deploy"
-
-    action {
-      version         = "1"
-      name            = "Build"
-      category        = "Build"
-      owner           = "AWS"
-      provider        = "CodeBuild"
-      input_artifacts = ["source"]
-
-      configuration = {
-        ProjectName = module.deploy.name
-      }
-    }
-  }
-  */
 }
 
 resource "random_pet" "stack_name" {}
