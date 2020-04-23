@@ -201,10 +201,8 @@ resource "aws_codepipeline" "codepipeline" {
 
       configuration = {
         PollForSourceChanges = false
-        //RepositoryName       = data.terraform_remote_state.repositories.outputs.wabi
         RepositoryName       = var.repository_name
-        //BranchName           = terraform.workspace
-        BranchName           = "feature/onCarrierChanged"
+        BranchName           = var.repository_branch
       }
     }
   }
@@ -254,12 +252,9 @@ resource "aws_codepipeline" "codepipeline" {
 
 resource "random_pet" "stack_name" {}
 
-
 data "aws_codecommit_repository" "codecommit" {
-  //repository_name = data.terraform_remote_state.repositories.outputs.wabipay
   repository_name = var.repository_name
 }
-
 
 resource "aws_cloudwatch_event_rule" "scm_change" {
   name_prefix = "${local.pipeline_name}_scm_change_"
@@ -272,8 +267,7 @@ resource "aws_cloudwatch_event_rule" "scm_change" {
   "detail": {
     "event": [ "referenceCreated", "referenceUpdated" ],
     "referenceType": [ "branch" ],
-    "referenceName": [ "feature/onCarrierChanged"
-    ]
+    "referenceName": [ "${var.repository_branch}" ]
   }
 }
 PATTERN

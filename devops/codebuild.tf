@@ -1,11 +1,6 @@
 
 data "template_file" "buildspec" {
   template = file("${path.module}/templates/buildspec.yml")
-   vars = {
-    db_url = "${var.db_url}"
-    db_user = "${var.db_username}"
-    db_password = "${var.db_password}"
-  }
 }
 
 module "build" {
@@ -21,7 +16,6 @@ module "build" {
 
 resource "aws_iam_role" "codebuild_role" {
   name_prefix = "${var.name}_codebuild_"
-
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",

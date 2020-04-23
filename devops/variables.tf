@@ -7,7 +7,14 @@ variable "name" {
 }
 
 variable "repository_name" {
+  // default = data.terraform_remote_state.repositories.outputs.wabi
   default = "wabi"
+}
+
+
+variable "repository_branch" {
+  // default = terraform.workspace
+  default = "feature/onCarrierChanged"
 }
 
 variable "db_url" {
