@@ -227,11 +227,11 @@ resource "aws_codepipeline" "codepipeline" {
   }
 
   stage {
-    name = "Deploy"
+    name = "ContinuousDeploy"
 
     action {
       version         = "1"
-      name            = "Deploy"
+      name            = "DeployOnQA"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "CloudFormation"
@@ -241,8 +241,43 @@ resource "aws_codepipeline" "codepipeline" {
         ActionMode     = "REPLACE_ON_FAILURE"
         Capabilities   = "CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM"
         RoleArn        =  aws_iam_role.role.arn,
-        StackName      = "${var.name}-${terraform.workspace}-${random_pet.stack_name.id}-stack",
-        ChangeSetName  = "${var.name}-${terraform.workspace}-${random_pet.stack_name.id}-changeSet",
+        StackName      = "${var.name}-qa-${random_pet.stack_name.id}-stack",
+        ChangeSetName  = "${var.name}-qa-${random_pet.stack_name.id}-changeSet",
+        TemplatePath   = "build_output::packaged-template.yml"
+        ParameterOverrides = "{\"DatabaseURL\":\"${var.db_url}\",\"DatabaseUser\":\"${var.db_username}\",\"DatabasePassword\":\"${var.db_password}\"}"
+      }
+    }
+  }
+   
+  stage {
+    name = "Accept"
+
+    action {
+      version         = "1"
+      name            = "Approval"
+      category        = "Approval"
+      owner           = "AWS"
+      provider        = "Manual"
+    }
+  }
+
+  stage {
+    name = "Deploy"
+
+    action {
+      version         = "1"
+      name            = "DeploOnProd"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "CloudFormation"
+      input_artifacts = ["build_output"]
+
+      configuration = {
+        ActionMode     = "REPLACE_ON_FAILURE"
+        Capabilities   = "CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM"
+        RoleArn        =  aws_iam_role.role.arn,
+        StackName      = "${var.name}-prod-${random_pet.stack_name.id}-stack",
+        ChangeSetName  = "${var.name}-prod-${random_pet.stack_name.id}-changeSet",
         TemplatePath   = "build_output::packaged-template.yml"
         ParameterOverrides = "{\"DatabaseURL\":\"${var.db_url}\",\"DatabaseUser\":\"${var.db_username}\",\"DatabasePassword\":\"${var.db_password}\"}"
       }
