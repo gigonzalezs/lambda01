@@ -243,7 +243,7 @@ resource "aws_codepipeline" "codepipeline" {
         RoleArn        =  aws_iam_role.role.arn,
         StackName      = "${var.name}-qa-${random_pet.stack_name.id}-stack",
         ChangeSetName  = "${var.name}-qa-${random_pet.stack_name.id}-changeSet",
-        TemplatePath   = "build_output::packaged-template.yml"
+        TemplatePath   = "build_output::qa-packaged-template.yml"
         ParameterOverrides = "{\"DatabaseURL\":\"${var.qa_db_url}\",\"DatabaseUser\":\"${var.qa_db_username}\",\"DatabasePassword\":\"${var.qa_db_password}\"}"
       }
     }
