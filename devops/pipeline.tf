@@ -278,7 +278,7 @@ resource "aws_codepipeline" "codepipeline" {
         RoleArn        =  aws_iam_role.role.arn,
         StackName      = "${var.name}-prod-${random_pet.stack_name.id}-stack",
         ChangeSetName  = "${var.name}-prod-${random_pet.stack_name.id}-changeSet",
-        TemplatePath   = "build_output::packaged-template.yml"
+        TemplatePath   = "build_output::prod-packaged-template.yml"
         ParameterOverrides = "{\"DatabaseURL\":\"${var.prod_db_url}\",\"DatabaseUser\":\"${var.prod_db_username}\",\"DatabasePassword\":\"${var.prod_db_password}\"}"
       }
     }
