@@ -8,7 +8,8 @@ phases:
       - pip install --upgrade pip
       - pip install pipenv --user
       - pipenv install awscli aws-sam-cli
-      - pipenv run echo "${qa_template}" > qa_template.yaml
+      - pipenv run echo "${qa_template}" > qa_template.yaml.b64
+      - pipenv run base64 -d qa_template.yaml.b64 > qa_template.yaml
       - pipenv run sam build --template-file qa_template.yaml
       - pipenv run sam package --template-file .aws-sam/build/template.yaml --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1q2dzim793q9k --output-template-file qa-packaged-template.yml --s3-prefix wabilytics-app --force-upload
 artifacts:
