@@ -54,7 +54,7 @@ Resources:
       Events:
         FunctionReceiveMessage:
           Type: SNS
-          PropertiesAllShiftsBusy:
+          Properties:
             Topic: ${sns_AllShiftsBusy}
 
 Outputs:
