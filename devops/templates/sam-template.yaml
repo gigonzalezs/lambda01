@@ -36,7 +36,7 @@ Resources:
         CarrierChangedFunctionReceiveMessage:
           Type: SNS
           Properties:
-            Topic: arn:aws:sns:us-east-1:835328222444:eventos
+            Topic: ${sns_CarrierChanged}
 
   AllShiftsBusyFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -52,10 +52,10 @@ Resources:
           DB_PASSWORD: !Ref DatabasePassword
           DB_CREATE_TABLES: false
       Events:
-        AllShiftsBusyFunctionReceiveMessage:
+        FunctionReceiveMessage:
           Type: SNS
-          Properties:
-            Topic: arn:aws:sns:us-east-1:835328222444:eventos
+          PropertiesAllShiftsBusy:
+            Topic: ${sns_AllShiftsBusy}
 
 Outputs:
   CarrierChangedFunction:

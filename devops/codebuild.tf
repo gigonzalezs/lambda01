@@ -1,6 +1,17 @@
 
 data "template_file" "buildspec" {
   template = file("${path.module}/templates/buildspec.yml")
+  vars = {
+    qa_template = "${data.template_file.qa_sam_template.rendered}"
+  }
+}
+
+data "template_file" "qa_sam_template" {
+  template = file("${path.module}/templates/sam-template.yaml")
+  vars = {
+    sns_CarrierChanged = "${var.qa_topic_carrierchanged}"
+    sns_AllShiftsBusy  = "${var.qa_topic_allshiftsbusy}"
+  }
 }
 
 module "build" {
