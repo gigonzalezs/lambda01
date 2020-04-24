@@ -2,7 +2,7 @@
 data "template_file" "buildspec" {
   template = file("${path.module}/templates/buildspec.yml")
   vars = {
-    qa_template = "${data.template_file.qa_sam_template.rendered}"
+    qa_template = "${base64encode(data.template_file.qa_sam_template.rendered)}"
   }
 }
 
