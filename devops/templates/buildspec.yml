@@ -11,7 +11,14 @@ phases:
       - pipenv run echo "${qa_template}" > qa_template.yaml.b64
       - pipenv run base64 -d qa_template.yaml.b64 > qa_template.yaml
       - pipenv run sam build --template-file qa_template.yaml
-      - pipenv run sam package --template-file .aws-sam/build/template.yaml --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1q2dzim793q9k --output-template-file qa-packaged-template.yml --s3-prefix wabilytics-app --force-upload
+      - pipenv run sam package --template-file .aws-sam/build/template.yaml --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1q2dzim793q9k --output-template-file qa-packaged-template.yml --s3-prefix qa-wabilytics-app --force-upload
+      - pipenv run rm -Rf .aws-sam
+      - pipenv run echo "${prod_template}" > prod_template.yaml.b64
+      - pipenv run base64 -d prod_template.yaml.b64 > prod_template.yaml
+      - pipenv run sam build --template-file prod_template.yaml
+      - pipenv run sam package --template-file .aws-sam/build/template.yaml --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1q2dzim793q9k --output-template-file prod-packaged-template.yml --s3-prefix prod-wabilytics-app --force-upload
+      
 artifacts:
   files:
     - qa-packaged-template.yml
+    - prod-packaged-template.yml

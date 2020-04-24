@@ -3,6 +3,7 @@ data "template_file" "buildspec" {
   template = file("${path.module}/templates/buildspec.yml")
   vars = {
     qa_template = "${base64encode(data.template_file.qa_sam_template.rendered)}"
+    prod_template = "${base64encode(data.template_file.prod_sam_template.rendered)}"
   }
 }
 
@@ -11,6 +12,14 @@ data "template_file" "qa_sam_template" {
   vars = {
     sns_CarrierChanged = "${var.qa_topic_carrierchanged}"
     sns_AllShiftsBusy  = "${var.qa_topic_allshiftsbusy}"
+  }
+}
+
+data "template_file" "prod_sam_template" {
+  template = file("${path.module}/templates/sam-template.yaml")
+  vars = {
+    sns_CarrierChanged = "${var.prod_topic_carrierchanged}"
+    sns_AllShiftsBusy  = "${var.prod_topic_allshiftsbusy}"
   }
 }
 
