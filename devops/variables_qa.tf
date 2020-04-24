@@ -9,3 +9,11 @@ variable "qa_db_username" {
 variable "qa_db_password" {
   default = "example"
 }
+
+variable "qa_topic_allshiftsbusy" {
+  default = "arn:aws:sns:us-east-1:835328222444:eventos"
+}
+
+variable "qa_topic_carrierchanged" {
+  default = "arn:aws:sns:us-east-1:835328222444:eventos"
+}

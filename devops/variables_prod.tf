@@ -9,3 +9,11 @@ variable "prod_db_username" {
 variable "prod_db_password" {
   default = "example"
 }
+
+variable "prod_topic_allshiftsbusy" {
+  default = "arn:aws:sns:us-east-1:835328222444:eventos"
+}
+
+variable "prod_topic_carrierchanged" {
+  default = "arn:aws:sns:us-east-1:835328222444:eventos"
+}
